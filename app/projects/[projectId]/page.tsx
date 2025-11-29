@@ -5,40 +5,6 @@ import Link from "next/link";
 import AuthGuard from "@/components/auth/AuthGuard";
 import type { Project, Run } from "@/lib/types";
 import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
-
-<header className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-  <div>
-    <Link
-      href="/projects"
-      className="inline-flex items-center text-xs text-gray-400 hover:text-white transition-colors mb-1"
-    >
-      ← All Projects
-    </Link>
-    <h1 className="text-lg font-semibold text-white">
-      Project {project.id}
-    </h1>
-    <p className="text-xs text-gray-400">
-      Repository: {project.repoUrl}
-    </p>
-  </div>
-  <div className="flex items-center gap-2">
-    <Link
-      href={`/projects/${project.id}/analysis`}
-      className="text-[11px] px-3 py-1 rounded-lg border border-slate-700 text-gray-200 hover:bg-slate-800"
-    >
-      View Analysis
-    </Link>
-    <Link
-      href={`/projects/${project.id}?startNewRun=1`}
-      className="text-[11px] px-3 py-1 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
-    >
-      + New Migration Run
-    </Link>
-  </div>
-</header>
-
-
 
 interface ProjectResponse {
   project: Project;
@@ -74,24 +40,36 @@ export default function ProjectDashboardPage() {
   return (
     <AuthGuard>
       <div className="min-h-screen bg-slate-950 text-white flex flex-col">
-        <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
+        {/* ✅ This header goes here */}
+        <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
           <div>
-            <h2 className="text-lg font-semibold">
-              {project?.name || "Project"}
-            </h2>
+            <Link
+              href="/projects"
+              className="inline-flex items-center text-xs text-gray-400 hover:text-white transition-colors mb-1"
+            >
+              ← All Projects
+            </Link>
+            <h1 className="text-lg font-semibold text-white">
+              Project {projectId}
+            </h1>
             <p className="text-xs text-gray-400">
-              {project?.repoUrl || "Loading repo URL..."}
+              Project overview and migration runs
             </p>
           </div>
-          {project && (
-            <ProjectActions
-              projectId={projectId}
-              hasRuns={runs.length > 0}
-              onRunCreated={(runId) =>
-                router.push(`/projects/${projectId}/runs/${runId}`)
-              }
-            />
-          )}
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/projects/${projectId}/analysis`}
+              className="text-[11px] px-3 py-1 rounded-lg border border-slate-700 text-gray-200 hover:bg-slate-800"
+            >
+              View Analysis
+            </Link>
+            <Link
+              href={`/projects/${projectId}?startNewRun=1`}
+              className="text-[11px] px-3 py-1 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
+            >
+              + New Migration Run
+            </Link>
+          </div>
         </header>
 
         <main className="flex-1 px-6 py-6">
