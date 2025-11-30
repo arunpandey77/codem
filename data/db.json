@@ -389,6 +389,84 @@
         ],
         "lastAnalyzedAt": "2025-11-29T21:32:01.078Z"
       }
+    },
+    {
+      "id": "proj_dse7w4ed_1764506845407",
+      "name": "test12",
+      "repoUrl": "https://github.com/arunpandey77/SBT.git",
+      "status": "ready",
+      "createdAt": "2025-11-30T12:47:25.407Z",
+      "updatedAt": "2025-11-30T12:47:25.953Z",
+      "analysis": {
+        "languages": [
+          {
+            "name": "C",
+            "percent": 20
+          },
+          {
+            "name": "C++",
+            "percent": 25
+          },
+          {
+            "name": "Java",
+            "percent": 35
+          },
+          {
+            "name": "Python",
+            "percent": 20
+          }
+        ],
+        "dependencies": [
+          "auth-service -> user-service",
+          "payment-service -> ledger-service",
+          "fraud-service -> rules-engine"
+        ],
+        "warnings": [
+          "Manual memory management in legacy modules.",
+          "Native interop/FFI present in some layers.",
+          "Multi-threading primitives need careful review post-migration."
+        ],
+        "lastAnalyzedAt": "2025-11-30T12:47:25.953Z"
+      }
+    },
+    {
+      "id": "proj_gub2iqi2_1764508237432",
+      "name": "test13",
+      "repoUrl": "https://github.com/arunpandey77/SBT.git",
+      "status": "ready",
+      "createdAt": "2025-11-30T13:10:37.432Z",
+      "updatedAt": "2025-11-30T13:10:38.126Z",
+      "analysis": {
+        "languages": [
+          {
+            "name": "C",
+            "percent": 20
+          },
+          {
+            "name": "C++",
+            "percent": 25
+          },
+          {
+            "name": "Java",
+            "percent": 35
+          },
+          {
+            "name": "Python",
+            "percent": 20
+          }
+        ],
+        "dependencies": [
+          "auth-service -> user-service",
+          "payment-service -> ledger-service",
+          "fraud-service -> rules-engine"
+        ],
+        "warnings": [
+          "Manual memory management in legacy modules.",
+          "Native interop/FFI present in some layers.",
+          "Multi-threading primitives need careful review post-migration."
+        ],
+        "lastAnalyzedAt": "2025-11-30T13:10:38.126Z"
+      }
     }
   ],
   "runs": [
@@ -590,6 +668,44 @@
       ],
       "createdAt": "2025-11-29T21:32:01.668Z",
       "updatedAt": "2025-11-29T21:32:01.668Z"
+    },
+    {
+      "id": "run_tw2equiq_1764506846526",
+      "projectId": "proj_dse7w4ed_1764506845407",
+      "scope": "service",
+      "status": "completed",
+      "stats": {
+        "totalFiles": 3,
+        "migrated": 3,
+        "pending": 0,
+        "manual": 0
+      },
+      "fileIds": [
+        "file_77uo951e_1764506865255",
+        "file_e1v13m8e_1764506865255",
+        "file_wzhk4ohk_1764506865255"
+      ],
+      "createdAt": "2025-11-30T12:47:26.526Z",
+      "updatedAt": "2025-11-30T12:47:26.526Z"
+    },
+    {
+      "id": "run_55cfuckx_1764508238880",
+      "projectId": "proj_gub2iqi2_1764508237432",
+      "scope": "service",
+      "status": "completed",
+      "stats": {
+        "totalFiles": 3,
+        "migrated": 3,
+        "pending": 0,
+        "manual": 0
+      },
+      "fileIds": [
+        "file_wh5qlkcf_1764508266239",
+        "file_6aug68q1_1764508266239",
+        "file_r2phrlz0_1764508266239"
+      ],
+      "createdAt": "2025-11-30T13:10:38.880Z",
+      "updatedAt": "2025-11-30T13:10:38.880Z"
     }
   ],
   "files": [
@@ -788,6 +904,54 @@
     {
       "id": "file_ordhqg6p_1764451941872",
       "runId": "run_reymh0x6_1764451921668",
+      "path": "file_2.txt",
+      "status": "migrated",
+      "originalCode": "#include <stdio.h>\n\nint sum_array(const int *arr, int length) {\n    int sum = 0;\n    for (int i = 0; i < length; i++) {\n        sum += arr[i];\n    }\n    return sum;\n}\n\nint main(void) {\n    int numbers[] = {1, 2, 3, 4, 5};\n    int length = sizeof(numbers) / sizeof(numbers[0]);\n\n    int result = sum_array(numbers, length);\n    printf(\"Sum of array = %d\\n\", result);\n\n    return 0;\n}\n",
+      "kotlinCode": "fun sumArray(arr: IntArray, length: Int): Int {\n    var sum = 0\n    for (i in 0 until length) {\n        sum += arr[i]\n    }\n    return sum\n}\n\nfun main() {\n    val numbers = intArrayOf(1, 2, 3, 4, 5)\n    val length = numbers.size\n\n    val result = sumArray(numbers, length)\n    println(\"Sum of array = $result\")\n}"
+    },
+    {
+      "id": "file_77uo951e_1764506865255",
+      "runId": "run_tw2equiq_1764506846526",
+      "path": "file_0.txt",
+      "status": "migrated",
+      "originalCode": "#include <stdio.h>\n\nint fibonacci(int n) {\n    if (n <= 0) return 0;\n    if (n == 1) return 1;\n\n    int a = 0, b = 1, c = 0;\n    for (int i = 2; i <= n; i++) {\n        c = a + b;\n        a = b;\n        b = c;\n    }\n    return b;\n}\n\nint main(void) {\n    int n = 10;\n\n    printf(\"Fibonacci series up to %d terms:\\n\", n);\n    for (int i = 0; i < n; i++) {\n        printf(\"%d \", fibonacci(i));\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+      "kotlinCode": "fun fibonacci(n: Int): Int {\n    if (n <= 0) return 0\n    if (n == 1) return 1\n\n    var a = 0\n    var b = 1\n    var c = 0\n    for (i in 2..n) {\n        c = a + b\n        a = b\n        b = c\n    }\n    return b\n}\n\nfun main() {\n    val n = 10\n    println(\"Fibonacci series up to $n terms:\")\n    for (i in 0 until n) {\n        print(\"${fibonacci(i)} \")\n    }\n    println()\n}"
+    },
+    {
+      "id": "file_e1v13m8e_1764506865255",
+      "runId": "run_tw2equiq_1764506846526",
+      "path": "file_1.txt",
+      "status": "migrated",
+      "originalCode": "#include <stdio.h>\n\nint main(void) {\n    printf(\"Hello from the SBT C repo! 🚀\\n\");\n    return 0;\n}\n",
+      "kotlinCode": "fun main() {\n    println(\"Hello from the SBT C repo! 🚀\")\n}"
+    },
+    {
+      "id": "file_wzhk4ohk_1764506865255",
+      "runId": "run_tw2equiq_1764506846526",
+      "path": "file_2.txt",
+      "status": "migrated",
+      "originalCode": "#include <stdio.h>\n\nint sum_array(const int *arr, int length) {\n    int sum = 0;\n    for (int i = 0; i < length; i++) {\n        sum += arr[i];\n    }\n    return sum;\n}\n\nint main(void) {\n    int numbers[] = {1, 2, 3, 4, 5};\n    int length = sizeof(numbers) / sizeof(numbers[0]);\n\n    int result = sum_array(numbers, length);\n    printf(\"Sum of array = %d\\n\", result);\n\n    return 0;\n}\n",
+      "kotlinCode": "fun sumArray(arr: IntArray, length: Int): Int {\n    var sum = 0\n    for (i in 0 until length) {\n        sum += arr[i]\n    }\n    return sum\n}\n\nfun main() {\n    val numbers = intArrayOf(1, 2, 3, 4, 5)\n    val length = numbers.size\n\n    val result = sumArray(numbers, length)\n    println(\"Sum of array = $result\")\n}"
+    },
+    {
+      "id": "file_wh5qlkcf_1764508266239",
+      "runId": "run_55cfuckx_1764508238880",
+      "path": "file_0.txt",
+      "status": "migrated",
+      "originalCode": "#include <stdio.h>\n\nint fibonacci(int n) {\n    if (n <= 0) return 0;\n    if (n == 1) return 1;\n\n    int a = 0, b = 1, c = 0;\n    for (int i = 2; i <= n; i++) {\n        c = a + b;\n        a = b;\n        b = c;\n    }\n    return b;\n}\n\nint main(void) {\n    int n = 10;\n\n    printf(\"Fibonacci series up to %d terms:\\n\", n);\n    for (int i = 0; i < n; i++) {\n        printf(\"%d \", fibonacci(i));\n    }\n    printf(\"\\n\");\n    return 0;\n}\n",
+      "kotlinCode": "fun fibonacci(n: Int): Int {\n    if (n <= 0) return 0\n    if (n == 1) return 1\n\n    var a = 0\n    var b = 1\n    var c = 0\n    for (i in 2..n) {\n        c = a + b\n        a = b\n        b = c\n    }\n    return b\n}\n\nfun main() {\n    val n = 10\n    println(\"Fibonacci series up to $n terms:\")\n    for (i in 0 until n) {\n        print(\"${fibonacci(i)} \")\n    }\n    println()\n}"
+    },
+    {
+      "id": "file_6aug68q1_1764508266239",
+      "runId": "run_55cfuckx_1764508238880",
+      "path": "file_1.txt",
+      "status": "migrated",
+      "originalCode": "#include <stdio.h>\n\nint main(void) {\n    printf(\"Hello from the SBT C repo! 🚀\\n\");\n    return 0;\n}\n",
+      "kotlinCode": "fun main() {\n    println(\"Hello from the SBT C repo! 🚀\")\n}"
+    },
+    {
+      "id": "file_r2phrlz0_1764508266239",
+      "runId": "run_55cfuckx_1764508238880",
       "path": "file_2.txt",
       "status": "migrated",
       "originalCode": "#include <stdio.h>\n\nint sum_array(const int *arr, int length) {\n    int sum = 0;\n    for (int i = 0; i < length; i++) {\n        sum += arr[i];\n    }\n    return sum;\n}\n\nint main(void) {\n    int numbers[] = {1, 2, 3, 4, 5};\n    int length = sizeof(numbers) / sizeof(numbers[0]);\n\n    int result = sum_array(numbers, length);\n    printf(\"Sum of array = %d\\n\", result);\n\n    return 0;\n}\n",
