@@ -3,8 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthGuard from "@/components/auth/AuthGuard";
+import type { LanguageCode } from "@/lib/types";
 
 type Step = 1 | 2 | 3;
+
+const LANGUAGE_OPTIONS: { value: LanguageCode; label: string }[] = [
+  { value: "c", label: "C" },
+  { value: "cpp", label: "C++" },
+  { value: "java", label: "Java" },
+  { value: "python", label: "Python" },
+  { value: "kotlin", label: "Kotlin" },
+  { value: "csharp", label: "C#" },
+  { value: "javascript", label: "JavaScript" },
+  { value: "typescript", label: "TypeScript" },
+];
 
 export default function NewProjectPage() {
   const [step, setStep] = useState<Step>(1);
@@ -15,6 +27,10 @@ export default function NewProjectPage() {
     "service",
   );
   const [submitting, setSubmitting] = useState(false);
+
+  // ✅ NEW: migration direction
+  const [sourceLanguage, setSourceLanguage] = useState<LanguageCode>("c");
+  const [targetLanguage, setTargetLanguage] = useState<LanguageCode>("kotlin");
 
   const router = useRouter();
 
@@ -33,11 +49,18 @@ export default function NewProjectPage() {
     if (!repoUrl) return;
     setSubmitting(true);
     try {
+      // ✅ send source/target to backend
       const res = await fetch("/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, repoUrl }),
+        body: JSON.stringify({
+          name,
+          repoUrl,
+          sourceLanguage,
+          targetLanguage,
+        }),
       });
+
       const project = await res.json();
 
       await fetch(`/api/projects/${project.id}/analysis`, {
@@ -86,16 +109,61 @@ export default function NewProjectPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Project name (optional)"
-                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm mb-4"
               />
+
+              {/* ✅ NEW: Source / Target language selection */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-200 mb-1">
+                    Source platform / language
+                  </label>
+                  <select
+                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                    value={sourceLanguage}
+                    onChange={(e) =>
+                      setSourceLanguage(e.target.value as LanguageCode)
+                    }
+                  >
+                    {LANGUAGE_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-1 text-xs text-gray-500">
+                    The language your existing codebase is written in.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-200 mb-1">
+                    Target platform / language
+                  </label>
+                  <select
+                    className="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm"
+                    value={targetLanguage}
+                    onChange={(e) =>
+                      setTargetLanguage(e.target.value as LanguageCode)
+                    }
+                  >
+                    {LANGUAGE_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-1 text-xs text-gray-500">
+                    The language Codem should generate.
+                  </p>
+                </div>
+              </div>
             </section>
           )}
 
           {step === 2 && (
             <section>
-              <h3 className="text-base font-semibold mb-2">
-                2. Define Scope
-              </h3>
+              <h3 className="text-base font-semibold mb-2">2. Define Scope</h3>
               <p className="text-sm text-gray-400 mb-4">
                 Choose how we determine which parts of the repo to migrate.
               </p>

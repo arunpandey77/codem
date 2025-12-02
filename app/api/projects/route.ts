@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { readDB, writeDB, generateId } from "@/lib/db";
-import type { Project } from "@/lib/types";
+import type { Project, LanguageCode } from "@/lib/types";
 
 export async function GET() {
   const db = await readDB();
@@ -9,7 +9,18 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { name, repoUrl } = body as { name?: string; repoUrl?: string };
+
+  const {
+    name,
+    repoUrl,
+    sourceLanguage,
+    targetLanguage,
+  } = body as {
+    name?: string;
+    repoUrl?: string;
+    sourceLanguage?: LanguageCode;
+    targetLanguage?: LanguageCode;
+  };
 
   if (!repoUrl) {
     return NextResponse.json(
@@ -19,6 +30,7 @@ export async function POST(req: Request) {
   }
 
   const now = new Date().toISOString();
+
   const project: Project = {
     id: generateId("proj"),
     name: name || repoUrl.split("/").slice(-1)[0] || "Untitled Project",
@@ -26,6 +38,10 @@ export async function POST(req: Request) {
     status: "not_analyzed",
     createdAt: now,
     updatedAt: now,
+
+    // ✅ NEW: persist migration direction
+    sourceLanguage,
+    targetLanguage,
   };
 
   const db = await readDB();

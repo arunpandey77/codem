@@ -29,6 +29,10 @@ export async function POST(req: Request, { params }: Params) {
   const now = new Date().toISOString();
   const runId = generateId("run");
 
+  // ✅ Capture languages from the project (if set)
+  const sourceLanguage = project.sourceLanguage;
+  const targetLanguage = project.targetLanguage;
+
   let files: FileMigration[] = [];
   const webhookUrl =
     process.env.N8N_MIGRATION_WEBHOOK_URL || DEFAULT_N8N_MIGRATION_WEBHOOK;
@@ -42,6 +46,10 @@ export async function POST(req: Request, { params }: Params) {
         runId,
         repoUrl: project.repoUrl,
         scope: scope || "service",
+
+        // ✅ Send to n8n so the workflow / prompt can be generic
+        sourceLanguage,
+        targetLanguage,
       }),
     });
 
@@ -111,6 +119,10 @@ export async function POST(req: Request, { params }: Params) {
           originalCode,
           kotlinCode,
           notes,
+
+          // ✅ Tag each file with direction (useful for future UI / analytics)
+          sourceLanguage,
+          targetLanguage,
         };
 
         return file;
@@ -130,6 +142,9 @@ export async function POST(req: Request, { params }: Params) {
           "public class Example {\n    public int add(int a, int b) { return a + b; }\n}",
         kotlinCode:
           "class Example {\n    fun add(a: Int, b: Int): Int = a + b\n}",
+        // ✅ still tag fallback with direction if we know it
+        sourceLanguage,
+        targetLanguage,
       },
     ];
   }
@@ -148,6 +163,10 @@ export async function POST(req: Request, { params }: Params) {
     fileIds: files.map((f) => f.id),
     createdAt: now,
     updatedAt: now,
+
+    // ✅ store the direction snapshot at run-time
+    sourceLanguage,
+    targetLanguage,
   };
 
   db.runs.push(run);
